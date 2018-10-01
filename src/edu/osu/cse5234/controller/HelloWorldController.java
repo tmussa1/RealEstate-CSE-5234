@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
-@ComponentScan(basePackages={"edu.osu.cse5234.config" , "edu.osu.cse5234.controller"})
+@ComponentScan(basePackages={"edu.osu.cse5234.config" , "edu.osu.cse5234.controller", "edu.osu.cse5234.model"})
 @RequestMapping("/hello")
 public class HelloWorldController {
 

@@ -3,7 +3,7 @@ package edu.osu.cse5234.config;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-@ComponentScan(basePackages={"edu.osu.cse5234.config" , "edu.osu.cse5234.controller"})
+@ComponentScan(basePackages={"edu.osu.cse5234.config" , "edu.osu.cse5234.controller", "edu.osu.cse5234.model"})
 public class MyWebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 	
 	@Override

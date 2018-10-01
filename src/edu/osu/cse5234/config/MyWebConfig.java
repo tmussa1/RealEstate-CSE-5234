@@ -6,7 +6,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
-@ComponentScan(basePackages={"edu.osu.cse5234.config" , "edu.osu.cse5234.controller"})
+@ComponentScan(basePackages={"edu.osu.cse5234.config" , "edu.osu.cse5234.controller", "edu.osu.cse5234.model"})
 public class MyWebConfig extends WebMvcConfigurerAdapter {
 	
 	@Override

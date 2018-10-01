@@ -1,8 +1,14 @@
 package edu.osu.cse5234.model;
 
 import java.util.ArrayList;
+
 import java.util.List;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+@Component
+@Scope("session")
 public class Order {
 	
 	private List<Item> itemList;
