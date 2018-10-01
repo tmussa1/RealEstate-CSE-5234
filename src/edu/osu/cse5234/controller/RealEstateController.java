@@ -49,7 +49,7 @@ public class RealEstateController {
 	@RequestMapping(path = "/submititem",  method = RequestMethod.POST)
 	public String submitItems(@ModelAttribute Order order1, HttpServletRequest request ,
 			HttpServletResponse response) {
-		request.getSession().setAttribute("order", order);
+		request.getSession().setAttribute("order", order1);
 		return "redirect:/purchase/paymententry";
 	}
 	
@@ -80,10 +80,9 @@ public class RealEstateController {
 	}
 	
 	@RequestMapping(path = "/vieworder",  method = RequestMethod.GET)
-	public String viewOrder(@ModelAttribute("order") Order order1,
-			HttpServletRequest request , HttpServletResponse responsen) {
-		Order order = (Order) session.getAttribute("order");
-		request.getSession().setAttribute("order", order1);
+	public String viewOrder(HttpServletRequest request , HttpServletResponse responsen) {
+		Order order = (Order) request.getSession().getAttribute("order");
+		request.setAttribute("order", order);
 		return "ViewOrder";
 	}
 	
