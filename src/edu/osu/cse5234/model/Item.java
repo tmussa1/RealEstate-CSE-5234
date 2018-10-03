@@ -3,7 +3,7 @@ package edu.osu.cse5234.model;
 public class Item {
 	private String itemName;
 	private String price;
-	private String quantity;
+	private int quantity;
 	
 	public String getItemName() {
 		return itemName;
@@ -17,17 +17,18 @@ public class Item {
 	public void setPrice(String price) {
 		this.price = price;
 	}
-	public String getQuantity() {
+	
+	public int getQuantity() {
 		return quantity;
 	}
-	public void setQuantity(String quantity) {
+	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
 	public Item(String itemName, String price) {
 		super();
 		this.itemName = itemName;
 		this.price = price;
-		this.quantity = "0";
+		this.quantity = 0;
 	}
 	public Item() {
 	}

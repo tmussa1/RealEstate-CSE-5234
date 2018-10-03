@@ -22,7 +22,6 @@ import edu.osu.cse5234.model.ShippingInfo;
 
 @Controller
 @ComponentScan(basePackages={"edu.osu.cse5234.config" , "edu.osu.cse5234.controller", "edu.osu.cse5234.model"})
-@RequestMapping("/purchase")
 @Scope("session")
 public class RealEstateController {
 	
@@ -32,11 +31,15 @@ public class RealEstateController {
 	Order order = new Order();
 	List<Item> items = new ArrayList<>();
 	
-	@RequestMapping(path = "/", method = RequestMethod.GET)
+	@RequestMapping(path = "/cart", method = RequestMethod.GET)
 	public String displayItems(HttpServletRequest request , HttpServletResponse response) {
 		
+		String [] itemName = new String[]{"Cordoba", "Easton", "Commons", "Colonial East", "Dublin"};
+		
 		for(int i = 0; i < 5; i++) {
-		 items.add(new Item("item : " + i, i + "10"));
+			if(items.size() < 5) {
+				items.add(new Item(itemName[i], i*i + "15"));
+			}
 		}
 		
 		Order order = new Order();
@@ -50,7 +53,7 @@ public class RealEstateController {
 	public String submitItems(@ModelAttribute Order order1, HttpServletRequest request ,
 			HttpServletResponse response) {
 		request.getSession().setAttribute("order", order1);
-		return "redirect:/purchase/paymententry";
+		return "redirect:/paymententry";
 	}
 	
 	@RequestMapping(path = "/paymententry", method = RequestMethod.GET)
@@ -63,7 +66,7 @@ public class RealEstateController {
 	public String submitPayment(@ModelAttribute PaymentInfo paymentInfo, 
 			HttpServletRequest request , HttpServletResponse response) {
 		request.getSession().setAttribute("paymentInfo", paymentInfo);
-		return "redirect:/purchase/shippingentry";
+		return "redirect:/shippingentry";
 	}
 	
 	@RequestMapping (path ="/shippingentry", method = RequestMethod.GET)
@@ -76,7 +79,7 @@ public class RealEstateController {
 	public String submitShipping(@ModelAttribute ShippingInfo shippingInfo,
 			HttpServletRequest request , HttpServletResponse response) {
 		request.getSession().setAttribute("shippingInfo", shippingInfo);
-		return "redirect:/purchase/vieworder";
+		return "redirect:/vieworder";
 	}
 	
 	@RequestMapping(path = "/vieworder",  method = RequestMethod.GET)
@@ -88,11 +91,27 @@ public class RealEstateController {
 	
 	@RequestMapping(path = "/confirmorder",  method = RequestMethod.POST)
 	public String confirmOrder(HttpServletRequest request , HttpServletResponse response) {
-		return "redirect:/purchase/viewconfirmation";
+		Order order = (Order) request.getSession().getAttribute("order");
+		int total = 0;
+		int price = 0, quantity = 0;
+		List<Item> items = order.getItemList();
+		
+		for(Item item: items) {
+			price = Integer.parseInt(item.getPrice());
+			quantity = item.getQuantity();
+			total += (price * quantity);
+		}
+		
+		ShippingInfo shippingInfo = (ShippingInfo) request.getSession().getAttribute("shippingInfo");
+		
+		request.getSession().setAttribute("shippingInfo", shippingInfo);
+		request.getSession().setAttribute("total", total);
+		request.getSession().setAttribute("confirmationNumber", "12345");
+		return "redirect:/viewconfirmation";
 	}
 	
 	@RequestMapping(path = "/viewconfirmation", method = RequestMethod.GET)
 	public String viewConfirmation(HttpServletRequest request , HttpServletResponse response) {
-		return "ViewConfirmation";
+		return "Confirmation";
 	}
 }

@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Payment Entry Form</title>
+<title>Shipping Information Form</title>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" 
  integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 </head>
@@ -14,7 +14,7 @@
 <br/>
 <br/>
 
-<form:form modelAttribute="shippingInfo" method="post" action="/RealEstate/purchase/submitshipping">
+<form:form modelAttribute="shippingInfo" method="post" action="/RealEstate/submitshipping">
   <div class="form-group col-md-6">
     <form:label path="customerName">Your Name</form:label>
     <form:input class="form-control" path="customerName" placeholder="your name"/>

@@ -13,7 +13,7 @@
 <h2><Strong>Please Enter Your Payment Information</Strong></h2>
 <br/>
 <br/>
-<form:form modelAttribute="paymentInfo" method="post" action="/RealEstate/purchase/submitpayment">
+<form:form modelAttribute="paymentInfo" method="post" action="/RealEstate/submitpayment">
   <div class="form-group col-md-6">
     <form:label path="creditCardNumber">Credit Card Number</form:label>
     <form:input class="form-control" path="creditCardNumber" placeholder="Credit card Number"/>
