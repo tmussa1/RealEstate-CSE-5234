@@ -25,8 +25,22 @@ import edu.osu.cse5234.model.ShippingInfo;
 @Scope("session")
 public class RealEstateController {
 	
-	@Autowired
-	HttpSession session;
+
+	@RequestMapping(path = "/", method = RequestMethod.GET)
+	public String homepage(HttpServletRequest request , HttpServletResponse response) {
+		return "home";
+	}
+	
+	@RequestMapping(path = "/contactus", method = RequestMethod.GET)
+	public String contactus(HttpServletRequest request , HttpServletResponse response) {
+		return "contactus";
+	}
+	
+	@RequestMapping(path = "/aboutus", method = RequestMethod.GET)
+	public String aboutus(HttpServletRequest request , HttpServletResponse response) {
+		return "aboutus";
+	}
+	
 	
 	Order order = new Order();
 	List<Item> items = new ArrayList<>();
