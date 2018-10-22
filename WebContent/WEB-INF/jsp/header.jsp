@@ -31,7 +31,7 @@
         <a class="nav-link" href="/RealEstate/contactus">Contact Us</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/RealEstate/cart">My Cart</a>
+        <a class="nav-link" href="/RealEstate/purchase">My Cart</a>
       </li>
     </ul>
   </div>

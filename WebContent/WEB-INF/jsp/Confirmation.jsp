@@ -24,6 +24,7 @@
   </p>
   <hr class="my-4">
   <p>The total charge is <%=request.getSession().getAttribute("total") %> </p>
+  <p>Your confirmation number is  <%=request.getSession().getAttribute("confirmationNumber") %> </p>
   <a class="btn btn-primary btn-lg" href="/RealEstate/" role="button">Go back to homepage</a>
 </div>
 

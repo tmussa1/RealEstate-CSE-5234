@@ -14,11 +14,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
-import edu.osu.cse5234.model.Item;
+import edu.osu.cse5234.business.view.Item;
 import edu.osu.cse5234.model.Order;
 import edu.osu.cse5234.model.PaymentInfo;
 import edu.osu.cse5234.model.ShippingInfo;
+import edu.osu.cse5234.util.ServiceLocator;
 
 @Controller
 @ComponentScan(basePackages={"edu.osu.cse5234.config" , "edu.osu.cse5234.controller", "edu.osu.cse5234.model"})
@@ -41,24 +41,12 @@ public class RealEstateController {
 		return "aboutus";
 	}
 	
-	
-	Order order = new Order();
-	List<Item> items = new ArrayList<>();
-	
-	@RequestMapping(path = "/cart", method = RequestMethod.GET)
+	@RequestMapping(path = "/purchase", method = RequestMethod.GET)
 	public String displayItems(HttpServletRequest request , HttpServletResponse response) {
-		
-		String [] itemName = new String[]{"Cordoba", "Easton", "Commons", "Colonial East", "Dublin"};
-		
-		for(int i = 0; i < 5; i++) {
-			if(items.size() < 5) {
-				items.add(new Item(itemName[i], i*i + "15"));
-			}
-		}
-		
+	
 		Order order = new Order();
-		order.setItemList(items);
-		
+		edu.osu.cse5234.business.view.InventoryService inventory = ServiceLocator.getInventoryService();
+		order.setItemList(inventory.getAvailableInventory().getItems());
 		request.setAttribute("order", order);
 		return "OrderEntryForm";
 	}
@@ -66,8 +54,15 @@ public class RealEstateController {
 	@RequestMapping(path = "/submititem",  method = RequestMethod.POST)
 	public String submitItems(@ModelAttribute Order order1, HttpServletRequest request ,
 			HttpServletResponse response) {
-		request.getSession().setAttribute("order", order1);
-		return "redirect:/paymententry";
+		
+		if(ServiceLocator.getOrderProcessingService().validateItemAvailability(order1)) {
+			request.getSession().setAttribute("order", order1);
+			return "redirect:/paymententry";
+		}
+		String error = "Item is unavailable";
+		
+		request.setAttribute("error", error);
+		return "redirect:/cart";
 	}
 	
 	@RequestMapping(path = "/paymententry", method = RequestMethod.GET)
@@ -105,22 +100,20 @@ public class RealEstateController {
 	
 	@RequestMapping(path = "/confirmorder",  method = RequestMethod.POST)
 	public String confirmOrder(HttpServletRequest request , HttpServletResponse response) {
-		Order order = (Order) request.getSession().getAttribute("order");
-		int total = 0;
-		int price = 0, quantity = 0;
-		List<Item> items = order.getItemList();
 		
-		for(Item item: items) {
-			price = Integer.parseInt(item.getPrice());
-			quantity = item.getQuantity();
-			total += (price * quantity);
-		}
+		
+		
+		Order order = (Order) request.getSession().getAttribute("order");
+		
+		String confirmation = ServiceLocator.getOrderProcessingService().processOrder(order);
+		
+		double total = order.getTotalPrice();
 		
 		ShippingInfo shippingInfo = (ShippingInfo) request.getSession().getAttribute("shippingInfo");
 		
 		request.getSession().setAttribute("shippingInfo", shippingInfo);
 		request.getSession().setAttribute("total", total);
-		request.getSession().setAttribute("confirmationNumber", "12345");
+		request.getSession().setAttribute("confirmationNumber", confirmation);
 		return "redirect:/viewconfirmation";
 	}
 	

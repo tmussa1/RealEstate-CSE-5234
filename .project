@@ -3,6 +3,7 @@
 	<name>RealEstate</name>
 	<comment></comment>
 	<projects>
+		<project>RealEstate-InventoryManagementClient</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
