@@ -1,12 +1,40 @@
 package edu.osu.cse5234.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="shipping_info")
 public class ShippingInfo {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="shipping_id")
+	private int id;
+	
+	@Column(name="customername")
 	private String customerName;
+	
+	@Column(name="lineone")
 	private String lineOne;
+	
+	@Column(name="linetwo")
 	private String lineTwo;
+	
+	@Column(name="city")
 	private String city;
+	
+	@Column(name="state")
 	private String state;
+	
+	@Column(name="zipcode")
 	private String zipCode;
+	
 	public String getCustomerName() {
 		return customerName;
 	}
@@ -54,6 +82,12 @@ public class ShippingInfo {
 		this.zipCode = zipCode;
 	}
 	public ShippingInfo() {
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 	

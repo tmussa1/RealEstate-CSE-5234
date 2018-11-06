@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import edu.osu.cse5234.business.view.Item;
+import edu.osu.cse5234.model.LineItem;
 import edu.osu.cse5234.model.Order;
 import edu.osu.cse5234.model.PaymentInfo;
 import edu.osu.cse5234.model.ShippingInfo;
@@ -46,7 +47,10 @@ public class RealEstateController {
 	
 		Order order = new Order();
 		edu.osu.cse5234.business.view.InventoryService inventory = ServiceLocator.getInventoryService();
-		order.setItemList(inventory.getAvailableInventory().getItems());
+		List<Item>itemList = inventory.getAvailableInventory().getItems();
+		List<LineItem> lineItemList = LineItem.itemToLineItemConverter(itemList);
+		
+		order.setItemList(lineItemList);
 		request.setAttribute("order", order);
 		return "OrderEntryForm";
 	}
@@ -75,11 +79,15 @@ public class RealEstateController {
 	public String submitPayment(@ModelAttribute PaymentInfo paymentInfo, 
 			HttpServletRequest request , HttpServletResponse response) {
 		request.getSession().setAttribute("paymentInfo", paymentInfo);
+		Order order = (Order) request.getSession().getAttribute("order");
+		order.setPaymentInfo(paymentInfo);
+		request.getSession().setAttribute("order", order);
 		return "redirect:/shippingentry";
 	}
 	
 	@RequestMapping (path ="/shippingentry", method = RequestMethod.GET)
 	public String shippingEntry(HttpServletRequest request , HttpServletResponse response) {
+
 		request.setAttribute("shippingInfo", new ShippingInfo());
 		return "ShippingEntryForm";
 	}
@@ -88,6 +96,9 @@ public class RealEstateController {
 	public String submitShipping(@ModelAttribute ShippingInfo shippingInfo,
 			HttpServletRequest request , HttpServletResponse response) {
 		request.getSession().setAttribute("shippingInfo", shippingInfo);
+		Order order = (Order) request.getSession().getAttribute("order");
+		order.setShippingInfo(shippingInfo);
+		request.getSession().setAttribute("order", order);
 		return "redirect:/vieworder";
 	}
 	
